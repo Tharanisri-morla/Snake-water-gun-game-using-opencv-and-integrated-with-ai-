@@ -1,0 +1,6 @@
+flask
+mediapipe
+# opencv-python-headless is smaller and better for cloud servers (no GUI needed on server)
+opencv-python-headless
+numpy
+gunicorn

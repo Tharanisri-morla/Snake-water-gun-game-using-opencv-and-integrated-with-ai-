@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Water Gun | Master of Gestures</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>SNAKE <span>•</span> WATER <span>•</span> GUN</h1>
+            <p>Ultimate Gesture Battle AI</p>
+        </div>
+
+        <!-- Gesture Guide -->
+        <div id="gesture-guide" class="gesture-guide">
+            <div class="guide-item">
+                <img src="{{ url_for('static', filename='assets/snake.png') }}" alt="Snake">
+                <span>V-Sign (2 Fingers)</span>
+                <strong>SNAKE</strong>
+            </div>
+            <div class="guide-item">
+                <img src="{{ url_for('static', filename='assets/water.png') }}" alt="Water">
+                <span>Open Palm</span>
+                <strong>WATER</strong>
+            </div>
+            <div class="guide-item">
+                <img src="{{ url_for('static', filename='assets/gun.png') }}" alt="Gun">
+                <span>Fist / Pistol</span>
+                <strong>GUN</strong>
+            </div>
+        </div>
+        <p class="gesture-disclaimer">ℹ️ <strong>Gesture Guide:</strong> ✌️ (V-Sign) for Snake • 🖐️ (Palm) for Water •
+            ✊ (Fist/Pistol) for Gun.</p>
+
+        <!-- Setup Screen -->
+        <div id="setup-screen">
+            <div class="setup-card">
+                <h2>Configure Your Battle</h2>
+
+                <div class="config-group">
+                    <label>Choose Your Opponent</label>
+                    <div class="avatar-select">
+                        <div class="avatar-card active" onclick="selectAvatar('rusty', this)">
+                            <div class="avatar-img">🤖</div>
+                            <div class="avatar-info">
+                                <h3>Rusty</h3>
+                                <p>The Logic Master</p>
+                            </div>
+                        </div>
+                        <div class="avatar-card" onclick="selectAvatar('zappy', this)">
+                            <div class="avatar-img">⚡</div>
+                            <div class="avatar-info">
+                                <h3>Zappy</h3>
+                                <p>The Wildcard</p>
+                            </div>
+                        </div>
+                        <div class="avatar-card" onclick="selectAvatar('luna', this)">
+                            <div class="avatar-img">🌙</div>
+                            <div class="avatar-info">
+                                <h3>Luna</h3>
+                                <p>The Zen Strategist</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-group">
+                    <label>Input Mode</label>
+                    <div class="mode-select">
+                        <button class="btn active" onclick="selectMode('1', this)">Keyboard ⌨️</button>
+                        <button class="btn" onclick="selectMode('2', this)">Gesture ✋</button>
+                    </div>
+                </div>
+
+                <div class="config-group">
+                    <label>AI Difficulty</label>
+                    <div class="difficulty-select">
+                        <button class="btn active" onclick="selectDifficulty('easy', this)">Normal 😄</button>
+                        <button class="btn" onclick="selectDifficulty('medium', this)">Pro 🤖</button>
+                        <button class="btn" onclick="selectDifficulty('hard', this)">GOD MODE 😈</button>
+                    </div>
+                </div>
+
+                <button class="btn start-btn" onclick="startGame()">ENTER THE ARENA</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="hidden">
+            <div id="countdown-overlay" class="hidden">
+                <div id="countdown-number">3</div>
+            </div>
+
+            <div class="game-header">
+                <div class="opponent-profile">
+                    <div class="opponent-avatar" id="opponent-avatar-icon">🤖</div>
+                    <div class="opponent-details">
+                        <h2 id="opponent-name">Rusty</h2>
+                        <div id="opponent-status">Online</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-main-layout">
+                <div class="game-info-side">
+                    <div class="scoreboard">
+                        <div class="score-box user">
+                            <div class="label">PLAYER</div>
+                            <div class="score-val" id="score-user">0</div>
+                        </div>
+                        <div class="round-tracker">
+                            <div class="label">ROUND</div>
+                            <div class="round-val" id="round-val">1</div>
+                        </div>
+                        <div class="score-box ai">
+                            <div class="label">AI OVERLORD</div>
+                            <div class="score-val" id="score-computer">0</div>
+                        </div>
+                    </div>
+
+                    <div class="battle-area">
+                        <div class="player-side" id="player-anim">❔</div>
+                        <div class="vs-badge">VS</div>
+                        <div class="computer-side" id="computer-anim">❔</div>
+                    </div>
+
+                    <div class="status-panel">
+                        <div class="result-message" id="result-msg">Ready?</div>
+                        <div class="commentary-box" id="commentary-text">Your move!</div>
+                    </div>
+
+                    <div class="ai-coach-bubble" id="coach-advice">
+                        <div class="coach-title" id="coach-name">RUSTY'S THOUGHTS</div>
+                        <div id="coach-text">Watch the patterns...</div>
+                    </div>
+                </div>
+
+                <div class="game-interaction-side">
+                    <!-- Keyboard Controls -->
+                    <div id="keyboard-controls" class="game-actions">
+                        <button class="action-btn" onclick="playMove('snake')">🐍<br>Snake</button>
+                        <button class="action-btn" onclick="playMove('water')">💧<br>Water</button>
+                        <button class="action-btn" onclick="playMove('gun')">🔫<br>Gun</button>
+                    </div>
+
+                    <!-- Camera -->
+                    <div id="camera-container" class="hidden">
+                        <div class="video-wrapper">
+                            <video id="webcam" autoplay playsinline></video>
+                            <div class="gesture-status" id="gesture-detected">Scanning...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-footer">
+                <button class="btn-text" onclick="resetGame()">QUIT TO MENU</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+
+</html>
