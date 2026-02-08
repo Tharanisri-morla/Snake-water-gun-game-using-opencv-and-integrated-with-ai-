@@ -36,10 +36,10 @@ MediaPipe (if used for hand detection)
 
 NumPy<br>
 Project Structure:~<br>
-project/
-│── app.py
-│── game_logic.py
-│── requirements.txt
-│── templates/
-│── static/
+project/<br>
+│── app.py<br>
+│── game_logic.py<br>
+│── requirements.txt<br>
+│── templates/<br>
+│── static/<br>
 │── Procfile
